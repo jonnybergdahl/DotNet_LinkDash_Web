@@ -1,4 +1,4 @@
-# LinkDash_DotNet_Web
+# DotNet_LinkDash_Web
 A simple link grouping web for organizing your link.
 
 Built with ASP.NET Core MVC on .NET 10, with a Material Design 3 inspired look (light and dark themes).
