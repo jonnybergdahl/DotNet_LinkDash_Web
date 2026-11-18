@@ -1,13 +1,15 @@
 # DotNet_LinkDash_Web
 A simple link grouping web for organizing your link.
 
-Built with ASP.NET Core MVC on .NET 10, with a Material Design 3 inspired look (light and dark themes).
+Built with ASP.NET Core MVC on .NET 10, using the look and layout of the [Bergdahl web app template](https://github.com/jonnybergdahl/Web_Bergdahl_Template): a left menu, light and dark themes (following the system by default, switched with the button in the top bar), and a search field that finds pages, groups and links.
+
+Design and code conventions are described in [AGENTS.md](AGENTS.md).
 
 ## Projects
 
 | Project | Description |
 | --- | --- |
-| `src/Bergdahl.LinkDash.Web` | MVC web app: the dashboard (`/`) and the settings pages for groups (`/Settings`) and links (`/Settings/Links`, one tab per group). |
+| `src/Bergdahl.LinkDash.Web` | MVC web app: the dashboard (`/`) and the settings pages for groups (`/Settings`) and links (`/Settings/Links`, one group at a time). |
 | `src/Bergdahl.LinkDash.Core` | Models, JSON file storage and the link service. |
 | `src/Bergdahl.LinkDash.Tests` | NUnit unit tests and in-memory integration tests. |
 
@@ -58,6 +60,7 @@ The account is saved in `admin.json` next to the data file. The password is neve
 
 > Whoever opens the settings pages first becomes the administrator, so create the account right after installing, before the app is reachable by others.
 
+Sign in and out from the account menu at the right end of the top bar.
 To reset a forgotten password, delete `admin.json`; the next visit to the settings pages asks for a new account.
 
 ### Setting the account in configuration (optional)
