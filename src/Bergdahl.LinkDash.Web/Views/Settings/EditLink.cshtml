@@ -2,56 +2,65 @@
 @model LinkFormModel
 @{
     ViewData["Title"] = Model.IsNew ? "Add link" : "Edit link";
-    ViewData["SettingsSection"] = "Links";
+    ViewData["Page"] = AppInfo.Pages.Links;
     var iconField = new IconFieldModel(nameof(Model.Icon), Model.Icon, EmptyHint: "Leave empty for the default link icon.", AllowFavicon: true,
         FaviconUrl: Model.IsNew ? null : Url.Action("Get", "Favicon", new { linkId = Model.LinkId, v = FaviconService.CacheKey(Model.Url) }));
 }
 
-<section class="card form-card">
-    <h1 class="card-title">@ViewData["Title"]</h1>
-    @if (!Model.IsNew)
-    {
-        <p class="muted">Group: @Model.GroupName</p>
-    }
-    <form asp-action="@(Model.IsNew ? "AddLink" : "EditLink")" method="post">
-        @if (Model.IsNew)
+<section class="page">
+    <header class="page-header">
+        <p class="breadcrumb">Links</p>
+        <h1>@ViewData["Title"]</h1>
+        @if (!Model.IsNew)
         {
-            <div class="text-field">
-                <label asp-for="GroupId"></label>
-                <select asp-for="GroupId" asp-items="@(new SelectList(Model.Groups, nameof(LinkGroup.Id), nameof(LinkGroup.Name)))" required></select>
-                <span asp-validation-for="GroupId" class="field-error"></span>
-            </div>
+            <p>Group: @Model.GroupName</p>
         }
-        else
+    </header>
+
+    <form asp-action="@(Model.IsNew ? "AddLink" : "EditLink")" method="post">
+        @if (!Model.IsNew)
         {
             <input type="hidden" asp-for="GroupId" />
             <input type="hidden" asp-for="LinkId" />
         }
-        <div asp-validation-summary="ModelOnly" class="field-error"></div>
+        <div class="card">
+            <div asp-validation-summary="ModelOnly" class="field-error"></div>
+            <div class="form-grid">
+                @if (Model.IsNew)
+                {
+                    <label class="field">
+                        <span>@Html.DisplayNameFor(m => m.GroupId)</span>
+                        <span class="select">
+                            <select asp-for="GroupId" asp-items="@(new SelectList(Model.Groups, nameof(LinkGroup.Id), nameof(LinkGroup.Name)))" required></select>
+                        </span>
+                        <span asp-validation-for="GroupId" class="field-error"></span>
+                    </label>
+                }
 
-        <div class="text-field">
-            <label asp-for="Title"></label>
-            <input asp-for="Title" autocomplete="off" required autofocus />
-            <span asp-validation-for="Title" class="field-error"></span>
+                <label class="field">
+                    <span>@Html.DisplayNameFor(m => m.Title)</span>
+                    <input asp-for="Title" autocomplete="off" required autofocus />
+                    <span asp-validation-for="Title" class="field-error"></span>
+                </label>
+
+                <label class="field">
+                    <span>@Html.DisplayNameFor(m => m.Url)</span>
+                    <input asp-for="Url" type="url" autocomplete="off" required />
+                    <span asp-validation-for="Url" class="field-error"></span>
+                </label>
+
+                <label class="field">
+                    <span>Description (optional)</span>
+                    <input asp-for="Description" autocomplete="off" />
+                    <span asp-validation-for="Description" class="field-error"></span>
+                </label>
+
+                <partial name="_IconField" model="iconField" />
+            </div>
         </div>
-
-        <div class="text-field">
-            <label asp-for="Url"></label>
-            <input asp-for="Url" type="url" autocomplete="off" required />
-            <span asp-validation-for="Url" class="field-error"></span>
-        </div>
-
-        <div class="text-field">
-            <label asp-for="Description">Description (optional)</label>
-            <input asp-for="Description" autocomplete="off" />
-            <span asp-validation-for="Description" class="field-error"></span>
-        </div>
-
-        <partial name="_IconField" model="iconField" />
-
         <div class="form-actions">
-            <a class="button text" asp-action="Links" asp-route-groupId="@Model.GroupId">Cancel</a>
-            <button type="submit" class="button filled">@(Model.IsNew ? "Add" : "Save")</button>
+            <button class="button" type="submit"><span class="icon">@(Model.IsNew ? "add" : "save")</span>@(Model.IsNew ? "Add" : "Save")</button>
+            <a class="button secondary" asp-action="Links" asp-route-groupId="@Model.GroupId">Cancel</a>
         </div>
     </form>
 </section>

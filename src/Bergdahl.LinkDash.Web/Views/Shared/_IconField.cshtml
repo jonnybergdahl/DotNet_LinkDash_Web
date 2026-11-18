@@ -4,7 +4,8 @@
     var invalid = ViewData.ModelState.TryGetValue(Model.Name, out var state) && state.Errors.Count > 0;
     var favicon = Model.AllowFavicon && LinkValidation.IsFavicon(Model.Value);
 }
-<div class="text-field">
+@* A div rather than a label, since it holds the preview and the dropdown list as well as the input. *@
+<div class="field">
     <label for="@id">Icon (optional)</label>
     <div class="icon-input">
         @if (favicon && Model.FaviconUrl is not null)
@@ -28,8 +29,8 @@
             <ul class="icon-options" id="@id-options" role="listbox" aria-label="Icons" hidden></ul>
         </div>
     </div>
-    <span class="field-hint">
+    <small class="field-hint">
         A <a href="https://pictogrammers.com/library/mdi/" target="_blank" rel="noopener noreferrer">Material Design Icons</a> name, written like in Home Assistant@(Model.AllowFavicon ? $", or \"{LinkValidation.FaviconIcon}\" to use the site's own icon" : null). @Model.EmptyHint
-    </span>
+    </small>
     @Html.ValidationMessage(Model.Name, new { @class = "field-error" })
 </div>

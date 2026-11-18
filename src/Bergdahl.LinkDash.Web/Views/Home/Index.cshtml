@@ -1,58 +1,61 @@
 @model IReadOnlyList<LinkGroup>
 @{
     ViewData["Title"] = "Dashboard";
+    ViewData["Page"] = AppInfo.Pages.Dashboard;
 }
 
-@if (Model.Count == 0)
-{
-    <section class="empty-state">
-        <img class="empty-state-logo" src="~/img/logo.png" alt="LinkDash" width="286" height="271" />
-        <h1>No links yet</h1>
-        <p>Create your first group and add some links to get started.</p>
-        <a class="button filled" asp-controller="Settings" asp-action="Index">
-            <span class="material-symbols-rounded">add</span>
-            Add links
-        </a>
-    </section>
-}
-else
-{
-    <div class="group-grid">
-        @foreach (var group in Model)
-        {
-            <section class="card group-card">
-                <h2 class="card-title group-title">
-                    @if (group.Icon is not null)
-                    {
-                        <span class="mdi @LinkValidation.IconCssClass(group.Icon)" aria-hidden="true"></span>
-                    }
-                    @group.Name
-                </h2>
-                @if (group.Links.Count == 0)
-                {
-                    <p class="muted">No links in this group.</p>
-                }
-                else
-                {
-                    <ul class="link-list">
-                        @foreach (var link in group.Links)
+<section class="page page-wide">
+    <header class="page-header">
+        <h1>Dashboard</h1>
+    </header>
+
+    @if (Model.Count == 0)
+    {
+        <div class="card">
+            <h2>No links yet</h2>
+            <p class="muted">Create your first group and add some links to get started.</p>
+            <a class="button" asp-controller="Settings" asp-action="Index"><span class="icon">add</span>Add links</a>
+        </div>
+    }
+    else
+    {
+        <div class="grid group-grid">
+            @foreach (var group in Model)
+            {
+                <div class="card group-card" id="group-@group.Id">
+                    <header class="card-header">
+                        @if (group.Icon is not null)
                         {
-                            <li>
-                                <a class="link-item" href="@link.Url" target="_blank" rel="noopener noreferrer" title="@link.Url">
-                                    <partial name="_LinkIcon" model='new LinkIconModel(link, "link-icon")' />
-                                    <span class="link-text">
-                                        <span class="link-title">@link.Title</span>
-                                        @if (!string.IsNullOrEmpty(link.Description))
-                                        {
-                                            <span class="link-description">@link.Description</span>
-                                        }
-                                    </span>
-                                </a>
-                            </li>
+                            <span class="group-icon mdi @LinkValidation.IconCssClass(group.Icon)" aria-hidden="true"></span>
                         }
-                    </ul>
-                }
-            </section>
-        }
-    </div>
-}
+                        <h2>@group.Name</h2>
+                    </header>
+                    @if (group.Links.Count == 0)
+                    {
+                        <p class="muted">No links in this group.</p>
+                    }
+                    else
+                    {
+                        <ul class="link-list">
+                            @foreach (var link in group.Links)
+                            {
+                                <li>
+                                    <a class="link-item" href="@link.Url" target="_blank" rel="noopener noreferrer" title="@link.Url">
+                                        <partial name="_LinkIcon" model='new LinkIconModel(link, "link-icon")' />
+                                        <span class="link-text">
+                                            <span class="link-title">@link.Title</span>
+                                            @if (!string.IsNullOrEmpty(link.Description))
+                                            {
+                                                <small class="muted">@link.Description</small>
+                                            }
+                                        </span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    }
+</section>

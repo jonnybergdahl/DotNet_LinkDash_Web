@@ -1,35 +1,33 @@
 @model LoginFormModel
 @{
+    Layout = "_LoginLayout";
     ViewData["Title"] = "Sign in";
 }
 
-<section class="card login-card">
-    <h1 class="card-title">Sign in</h1>
-    <p class="muted">Sign in to change groups and links.</p>
-    <form asp-action="Login" method="post">
-        <input type="hidden" asp-for="ReturnUrl" />
-        <div asp-validation-summary="ModelOnly" class="field-error"></div>
+<form class="login-card" asp-action="Login" method="post">
+    <h1 class="login-title">
+        <img class="app-icon" src="~/img/app-icon.svg" alt="" width="40" height="40" />
+        <span>@AppInfo.Name</span>
+    </h1>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="ModelOnly" class="field-error"></div>
 
-        <div class="text-field">
-            <label asp-for="Username"></label>
-            <input asp-for="Username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus />
-            <span asp-validation-for="Username" class="field-error"></span>
-        </div>
+    <label class="field">
+        <span>@Html.DisplayNameFor(m => m.Username)</span>
+        <input asp-for="Username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus />
+        <span asp-validation-for="Username" class="field-error"></span>
+    </label>
 
-        <div class="text-field">
-            <label asp-for="Password"></label>
-            <input asp-for="Password" autocomplete="current-password" required />
-            <span asp-validation-for="Password" class="field-error"></span>
-        </div>
+    <label class="field">
+        <span>@Html.DisplayNameFor(m => m.Password)</span>
+        <input asp-for="Password" autocomplete="current-password" required />
+        <span asp-validation-for="Password" class="field-error"></span>
+    </label>
 
-        <label class="checkbox-field">
-            <input asp-for="RememberMe" />
-            <span>@Html.DisplayNameFor(m => m.RememberMe)</span>
-        </label>
+    <label class="check">
+        <input asp-for="RememberMe" />
+        <span>@Html.DisplayNameFor(m => m.RememberMe)</span>
+    </label>
 
-        <div class="form-actions">
-            <a class="button text" asp-controller="Home" asp-action="Index">Cancel</a>
-            <button type="submit" class="button filled">Sign in</button>
-        </div>
-    </form>
-</section>
+    <button class="button" type="submit"><span class="icon">login</span>Sign in</button>
+</form>

@@ -1,0 +1,25 @@
+@* The <head> contents shared by _Layout and _LoginLayout. ViewData["Title"] is the page's <h1>. *@
+@{
+    var title = ViewData["Title"] as string;
+}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>@(title is null ? AppInfo.Name : $"{title} · {AppInfo.Name}")</title>
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#0093dd" />
+<link rel="icon" href="~/favicon.ico" sizes="any" />
+<link rel="icon" href="~/img/app-icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="~/img/apple-touch-icon.png" />
+<link rel="manifest" href="~/site.webmanifest" />
+
+@* Material Symbols for the UI (https://fonts.google.com/icons) *@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@@20..48,100..700,0..1,-50..200&display=block" />
+@* Material Design Icons, only for the icons users pick for their groups and links *@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+
+<link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<script src="~/js/theme.js" asp-append-version="true"></script>

@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Account";
+    ViewData["Page"] = AppInfo.Pages.Account;
+}
+
+<section class="page">
+    <header class="page-header">
+        <h1>Account</h1>
+        <p>The administrator account that can change groups and links.</p>
+    </header>
+    <div class="card">
+        <dl class="details">
+            <dt>User name</dt>
+            <dd>@User.Identity?.Name</dd>
+        </dl>
+    </div>
+</section>

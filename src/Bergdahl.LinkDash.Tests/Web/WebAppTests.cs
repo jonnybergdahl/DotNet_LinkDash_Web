@@ -56,6 +56,41 @@ public class WebAppTests
     }
 
     [Test]
+    public async Task Search_FindsPagesGroupsAndLinks()
+    {
+        var group = await Service.AddGroupAsync("Mail servers");
+        await Service.AddLinkAsync(group.Id, new LinkInput("Webmail", "https://mail.example.com"));
+        await Service.AddLinkAsync(group.Id, new LinkInput("Router", "https://192.168.1.1", "Not about email"));
+
+        var results = (await _client.GetFromJsonAsync<SearchResultDto[]>("/Home/Search?q=MAIL"))!;
+
+        Assert.That(results.Select(r => r.Title), Is.EqualTo(new[] { "Mail servers", "Webmail", "Router" }));
+        Assert.That(results[0].Url, Is.EqualTo($"/#group-{group.Id}"));
+        Assert.That(results[0].External, Is.False);
+        Assert.That(results[1].Url, Is.EqualTo("https://mail.example.com"));
+        Assert.That(results[1].Subtitle, Is.EqualTo("Mail servers"));
+        Assert.That(results[1].External, Is.True);
+    }
+
+    [Test]
+    public async Task Search_FindsPagesByTitle()
+    {
+        var results = await _client.GetFromJsonAsync<SearchResultDto[]>("/Home/Search?q=links");
+
+        Assert.That(results!.Single().Url, Is.EqualTo("/Settings/Links"));
+    }
+
+    [Test]
+    public async Task Search_ReturnsNothingForEmptyQuery()
+    {
+        var results = await _client.GetFromJsonAsync<SearchResultDto[]>("/Home/Search?q=%20");
+
+        Assert.That(results, Is.Empty);
+    }
+
+    private record SearchResultDto(string Title, string Subtitle, string Icon, string Url, bool External);
+
+    [Test]
     public async Task Home_ServesFavicon()
     {
         var response = await _client.GetAsync("/favicon.ico");
@@ -79,7 +114,7 @@ public class WebAppTests
 
         var html = await _client.GetStringAsync("/Settings");
 
-        Assert.That(html, Does.Contain("class=\"data-table\""));
+        Assert.That(html, Does.Contain("class=\"table\""));
         Assert.That(html, Does.Contain($"id=\"group-{group.Id}\""));
         Assert.That(html, Does.Contain("mdi-briefcase"));
         Assert.That(html, Does.Contain($"href=\"/Settings/EditGroup/{group.Id}\""));

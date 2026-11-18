@@ -3,12 +3,16 @@
     ViewData["Title"] = "Error";
 }
 
-<section class="card narrow">
-    <h1 class="card-title error-text">Something went wrong</h1>
-    <p>An error occurred while processing your request.</p>
-    @if (Model.ShowRequestId)
-    {
-        <p class="muted">Request ID: <code>@Model.RequestId</code></p>
-    }
-    <a class="button text" asp-controller="Home" asp-action="Index">Back to dashboard</a>
+<section class="page">
+    <header class="page-header">
+        <h1>Something went wrong</h1>
+        <p>An error occurred while processing your request.</p>
+    </header>
+    <div class="card">
+        @if (Model.ShowRequestId)
+        {
+            <p class="muted">Request ID: <code>@Model.RequestId</code></p>
+        }
+        <a class="button secondary" asp-controller="Home" asp-action="Index"><span class="icon">arrow_back</span>Back to dashboard</a>
+    </div>
 </section>

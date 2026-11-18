@@ -79,7 +79,7 @@ public class AuthenticationTests
         Assert.That(response.Headers.Location?.OriginalString, Is.EqualTo("/Settings/Links"));
         var settings = await _client.GetAsync("/Settings");
         Assert.That(settings.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        Assert.That(await settings.Content.ReadAsStringAsync(), Does.Contain("Sign out"));
+        Assert.That(await settings.Content.ReadAsStringAsync(), Does.Contain("Logout"));
     }
 
     [TestCase("https://evil.example.com/")]

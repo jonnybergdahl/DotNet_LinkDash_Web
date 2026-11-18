@@ -20,6 +20,16 @@ public class AccountController(AdminCredentials credentials) : Controller
     /// </summary>
     public const string LoginRateLimitPolicy = "login";
 
+    /// <summary>
+    /// The account page, opened from the account menu.
+    /// </summary>
+    [HttpGet]
+    public IActionResult Index()
+    {
+        // The controller allows anonymous access for the sign-in pages, which overrides [Authorize] on an action.
+        return User.Identity?.IsAuthenticated == true ? View() : Challenge();
+    }
+
     [HttpGet]
     public IActionResult Login(string? returnUrl)
     {
